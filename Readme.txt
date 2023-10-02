@@ -2,9 +2,11 @@ IMPLEMENTAR: Interval createInterval(x)
 
 IMPLEMENTAR: Interval powInterval(x, exp)
 
-IMPLEMENTAR: freeInterval
+IMPLEMENTAR: calculateResidual(answer, tab);
 
 IMPLEMENTAR: printVectorInterval
+
+IMPLEMENTAR: freeInterval
 
 CONFERIR   : Conferir funções multInterval e sumInterval
 
