@@ -25,6 +25,9 @@ Table *createTable();
 // Libera a memória reservada por um tipo Table.
 void freeTable(Table *t);
 
+// Aplica o Método dos Mínimos Quadrados com base na tabela tab, utilizando um polinômio de grau n-1
+Interval *minimumSquare(int n, Interval *tab);
+
 // Debug
 void testaValores(Interval *p, Table *t);
 
