@@ -1,6 +1,6 @@
 TARGET = ajustePol
 
-SRCDIR = ./src ./src/utils
+SRCDIR = ./src ./src/curveFit
 INCDIR = ./include
 
 CC 			= gcc
