@@ -3,51 +3,23 @@
 #ifndef INTERVAL_H
 #define INTERVAL_H
 
-typedef union {
-  int32_t i;
-  float f;
-} FloatT;
+typedef struct {
+    double min;
+    double max;
+} Interval;
 
-struct Interval {
-  FloatT first;
-  FloatT second;
-};
+void createInterval(double num, Interval *inter);
 
-struct Expression {
-  FloatT nums[OPS + 1];
-  char ops[OPS];
-};
+Interval intervalSum(Interval a, Interval b);
 
-struct Expression *readExpression();
+Interval intervalSub(Interval a, Interval b);
 
-struct Interval *makeInterval(float num);
+Interval intervalMult(Interval a, Interval b);
 
-struct Interval **makeIntervalVector(struct Expression *expr);
+Interval intervalDiv(Interval a, Interval b);
 
-struct Interval *intervalSum(struct Interval a, struct Interval b);
+Interval intervalPow(Interval a, int b);
 
-struct Interval *intervalSub(struct Interval a, struct Interval b);
-
-struct Interval *intervalMult(struct Interval a, struct Interval b);
-
-struct Interval *intervalDiv(struct Interval a, struct Interval b);
-
-struct Interval **calculate(struct Expression expression,
-                            struct Interval **intervalVector);
-
-float absError(struct Interval interval);
-
-float relError(struct Interval interval);
-
-int calcULPs(struct Interval interval);
-
-void printAnswer(struct Expression expression, struct Interval **intervalVector,
-                 struct Interval **ansIntervalVector);
-
-void freeExpression(struct Expression *expression);
-
-void freeIntervalVector(struct Interval **interval);
-
-void freeAnsIntervalVector(struct Interval **interval);
+double intervalMean(Interval a);
 
 #endif /* INTERVAL_H */

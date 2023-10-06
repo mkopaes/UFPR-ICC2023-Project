@@ -1,7 +1,6 @@
-IMPLEMENTAR: Interval createInterval(x)
-             Interval sumInterval(x, y)
-             Interval multInterval(x, y)
-             Interval powInterval(x, exp)
+IMPLEMENTAR: Interval powInterval(x, exp)
+             Resíduo
+             Tempo
+             LIKWID
 
-CONFERIR   : No arquivo fonte minimumSquare.c precisamos implementar a função solveLinearSystem,
-             que nada mais é do que aplicar Eliminação de Gauss
+             print

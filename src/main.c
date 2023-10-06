@@ -2,13 +2,14 @@
 #include <stdio.h>
 
 int main(){
+    Interval *solution;
     int degree_N;
 
     scanf("%d", &degree_N);
 
     Table *tab = createTable();
-    Interval *answer = minimumSquare(degree_N, tab);
-    //Interval *residual = calculateResidual(answer, tab);
+    LinearSystem *LS = minimumSquare(degree_N, tab, solution);
+    Interval *residue = calculateResidualVector(LS, solution);
 
     //printVectorInterval(answer, numCoef);
     //printVectorInterval(residual, numCoef);

@@ -3,22 +3,22 @@
 
 #include "../include/linearSystem.h"
 
-void substitution(struct LinearSystem *system, double *solution) {
+void substitution(LinearSystem *system, Interval *solution) {
   int size = system->size;
 
   for (int i = size - 1; i >= 0; i--) {
     solution[i] = system->b[i];
     for (int j = i + 1; j < size; j++)
-      solution[i] -= system->m[i][j] * solution[j];
-    solution[i] /= system->m[i][i];
+      solution[i] = intervalSub(solution[i], intervalMult(system->coef[i][j], solution[j]));
+      solution[i] = intervalDiv(solution[i], system->coef[i][i]);
   }
 }
 
-int findMax(double **A, int col, int size) {
+int findMax(Interval **A, int col, int size) {
   int row = col;
 
   for (int i = col; i < size; i++) {
-    if (fabs(A[i][col]) > fabs(A[row][col])) {
+    if (fabs(intervalMean(A[i][col])) > fabs(intervalMean(A[row][col]))) {
       row = i;
     }
   }
@@ -26,43 +26,47 @@ int findMax(double **A, int col, int size) {
   return row;
 }
 
-void swapRow(struct LinearSystem *system, int rowA, int rowB) {
-  double **A = system->m;
-  double *B = system->b;
+void swapRow(LinearSystem *system, int rowA, int rowB) {
+  Interval **A = system->coef;
+  Interval *B = system->b;
 
   for (int i = 0; i < system->size; i++) {
-    double aux = A[rowA][i];
+    Interval aux = A[rowA][i];
     A[rowA][i] = A[rowB][i];
     A[rowB][i] = aux;
   }
 
-  double aux = B[rowA];
+  Interval aux = B[rowA];
   B[rowA] = B[rowB];
   B[rowB] = aux;
 }
 
-void gaussElimination(struct LinearSystem *system) {
+void gaussElimination(LinearSystem *system) {
   int size = system->size;
 
   for (int i = 0; i < size; ++i) {
-    int rowPivot = findMax(system->m, i, system->size);
+    int rowPivot = findMax(system->coef, i, system->size);
+
     if (i != rowPivot) {
       swapRow(system, i, rowPivot);
     }
+
     for (int k = i + 1; k < size; k++) {
-      double m = system->m[k][i] / system->m[i][i];
-      system->m[k][i] = 0.0;
+      Interval m = intervalDiv(system->coef[k][i], system->coef[i][i]);
+      createInterval(0.0, &system->coef[k][i]);
+
       for (int j = i + 1; j < size; j++) {
-        system->m[k][j] -= system->m[i][j] * m;
+        system->coef[k][j] = intervalSub(system->coef[k][j], intervalMult(system->coef[i][j], m));
       }
-      system->b[k] -= system->b[i] * m;
+
+      system->b[k] = intervalSub(system->b[k], intervalMult(system->b[i], m));
     }
   }
 }
 
-double *solveLinearSystem(struct LinearSystem *system) {
+Interval *solveLinearSystem(LinearSystem *system) {
   int size = system->size;
-  double *solution = malloc(sizeof(double) * size);
+  Interval *solution = malloc(sizeof(Interval) * size);
 
   gaussElimination(system);
   substitution(system, solution);
