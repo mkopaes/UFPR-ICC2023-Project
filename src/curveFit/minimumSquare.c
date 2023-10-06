@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "../../include/curveFit.h"
+#include "../../include/interval.h"
 
 // --------------- Funções Internas
 
@@ -35,14 +36,14 @@ Interval *calculateSums(int n, Table *tab, Interval *sumsB){
 
     // Calcula os somatórios dos coeficientes da primeira linha e do vetor B
     for(int p = 0; p < numCoef; p++){
-        Interval xp = powInterval(tab->x[0], p); // xp = x^p
+        Interval xp = intervalPow(tab->x[0], p); // xp = x^p
         Interval sumCoef = xp;
 
         Interval y_xp = multInterval(tab->y[0], xp); // y_xp = y * x^p
         Interval sumB = y_xp;
 
         for(int i = 1; i < tab->numPoints; i++){
-            xp = powInterval(tab->x[i], p);
+            xp = intervalPow(tab->x[i], p);
             sumCoef = sumInterval(sumCoef, xp);
 
             y_xp = multInterval(tab->y[i], xp);
@@ -55,11 +56,11 @@ Interval *calculateSums(int n, Table *tab, Interval *sumsB){
 
     // Calcula os somatórios dos coeficientes que faltaram
     for(int p = numCoef; p < totalSums; p++){
-        Interval xp = powInterval(tab->x[0], p);
+        Interval xp = intervalPow(tab->x[0], p);
         Interval sumCoef = xp;
 
         for(int i = 1; i < tab->numPoints; i++){
-            xp = powInterval(tab->x[i], p);
+            xp = intervalPow(tab->x[i], p);
             sumCoef = sumInterval(sumCoef, xp);
         }
         sumsCoef[p] = sumCoef;
@@ -96,7 +97,7 @@ void freeLinearSystem(LinearSystem *LS){
 
 Interval *minimumSquare(int n, Table *tab){
     LinearSystem *LS = buildLinearSystem(n, tab);
-    Interval *answer; // solveLinearSystem(n, LS);
+    Interval *answer = solveLinearSystem(n, LS);
     freeLinearSystem(LS);
     return answer;
 }
