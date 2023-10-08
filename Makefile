@@ -5,15 +5,16 @@ INCDIR = ./include
 
 CC 			= gcc
 CFILES 		= $(foreach D, $(SRCDIR), $(wildcard $(D)/*.c))
-CFLAGS 		= -O3 -mavx -march=native
-LDFLAGS 	= $(foreach D, $(INCDIR), -I$(D))
-LBFLAGS 	= -lm
+# CFLAGS 		= -O3 -mavx -march=native
+CFLAGS		= -O3 -mavx -march=native -I${LIKWID_INCLUDE} -DLIKWID_PERFMON
+# LDFLAGS 	= -lm $(foreach D, $(INCDIR), -I$(D))
+LDFLAGS		= -lm -I$(INCDIR) -L${LIKWID_LIB} -llikwid
 OBJFILES 	= $(patsubst %.c, %.o, $(CFILES))
 
 all: $(TARGET)
 
 $(TARGET): $(OBJFILES)
-	$(CC) -o $@ $^ $(LBFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $^
@@ -21,3 +22,5 @@ $(TARGET): $(OBJFILES)
 clean:
 	rm -f $(TARGET) $(OBJFILES)
 
+purge: 
+	rm -f $(TARGET) $(OBJFILES) *.txt *.log

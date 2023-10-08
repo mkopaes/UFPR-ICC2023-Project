@@ -4,8 +4,8 @@
 #define INTERVAL_H
 
 typedef struct {
-    double min;
-    double max;
+  double min;
+  double max;
 } Interval;
 
 void createInterval(double num, Interval *inter);
@@ -21,5 +21,11 @@ Interval intervalDiv(Interval a, Interval b);
 Interval intervalPow(Interval a, int b);
 
 double intervalMean(Interval a);
+
+void printInterval(Interval a);
+
+void printIntervalVector(Interval *interval, int size);
+
+void freeIntervalVector(Interval *interval);
 
 #endif /* INTERVAL_H */

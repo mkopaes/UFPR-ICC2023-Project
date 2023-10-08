@@ -1,21 +1,33 @@
 #include "../include/curveFit.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-int main(){
-    Interval *solution;
-    int degree_N;
+int main() {
+  // Arrange
+  int degree_N;
+  double tGeraSL;
+  double tSolSL;
 
-    scanf("%d", &degree_N);
+  Interval *solution = malloc(sizeof(Interval) * (degree_N + 1));
 
-    Table *tab = createTable();
-    LinearSystem *LS = minimumSquare(degree_N, tab, solution);
-    Interval *residue = calculateResidualVector(LS, solution);
+  scanf("%d", &degree_N);
 
-    //printVectorInterval(answer, numCoef);
-    //printVectorInterval(residual, numCoef);
+  Table *tab = createTable();
 
-    //freeInterval(answer);
-    //freeInterval(residual);
-    freeTable(tab);
-    return 0;
+  // Calculate
+  LinearSystem *LS = minimumSquare(degree_N, tab, solution, &tGeraSL, &tSolSL);
+  Interval *residue = calculateResidualVector(solution, tab, LS->size);
+
+  // Print
+  printIntervalVector(solution, LS->size);
+  printIntervalVector(residue, tab->numPoints);
+  printf("%1.8e\n", tGeraSL);
+  printf("%1.8e\n", tSolSL);
+
+  // Free
+  freeIntervalVector(solution);
+  freeIntervalVector(residue);
+  freeLinearSystem(LS);
+  freeTable(tab);
+  return 0;
 }

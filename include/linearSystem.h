@@ -1,32 +1,23 @@
-#include <sys/time.h>
 #include "./interval.h"
 #include "./table.h"
+#include "./utils.h"
+#include <sys/time.h>
 
 #ifndef LINEAR_SYSTEM_H
 #define LINEAR_SYSTEM_H
 
-typedef struct{
-    Interval **coef;
-    Interval *b;
-    int size;
+typedef struct {
+  Interval **coef;
+  Interval *b;
+  int size;
 } LinearSystem;
 
-LinearSystem *buildLinearSystem(int n, Table *tab);
+LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL);
 
-Interval *solveLinearSystem(LinearSystem *system);
+void solveLinearSystem(LinearSystem *system, Interval *solution);
 
-void printSolution(double *solution, int size);
-
-Interval *calculateResidualVector(LinearSystem *system, Interval *solution);
-
-void printResidualVector(double *residualVector, int size);
+Interval *calculateResidualVector(Interval *solution, Table *tab, int size);
 
 void freeLinearSystem(LinearSystem *LS);
-
-//void printTime(timeval start, timeval end);
-
-//void freeSystem(LinearSystem *system);
-
-//void freeDoubleArray(double *array);
 
 #endif /* LINEAR_SYSTEM_H */

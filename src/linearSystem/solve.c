@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "../include/linearSystem.h"
+#include "../../include/linearSystem.h"
 
 void substitution(LinearSystem *system, Interval *solution) {
   int size = system->size;
@@ -9,8 +9,9 @@ void substitution(LinearSystem *system, Interval *solution) {
   for (int i = size - 1; i >= 0; i--) {
     solution[i] = system->b[i];
     for (int j = i + 1; j < size; j++)
-      solution[i] = intervalSub(solution[i], intervalMult(system->coef[i][j], solution[j]));
-      solution[i] = intervalDiv(solution[i], system->coef[i][i]);
+      solution[i] = intervalSub(solution[i],
+                                intervalMult(system->coef[i][j], solution[j]));
+    solution[i] = intervalDiv(solution[i], system->coef[i][i]);
   }
 }
 
@@ -53,10 +54,12 @@ void gaussElimination(LinearSystem *system) {
 
     for (int k = i + 1; k < size; k++) {
       Interval m = intervalDiv(system->coef[k][i], system->coef[i][i]);
-      createInterval(0.0, &system->coef[k][i]);
+      system->coef[k][i].min = 0.0;
+      system->coef[k][i].max = 0.0;
 
       for (int j = i + 1; j < size; j++) {
-        system->coef[k][j] = intervalSub(system->coef[k][j], intervalMult(system->coef[i][j], m));
+        system->coef[k][j] = intervalSub(system->coef[k][j],
+                                         intervalMult(system->coef[i][j], m));
       }
 
       system->b[k] = intervalSub(system->b[k], intervalMult(system->b[i], m));
@@ -64,12 +67,7 @@ void gaussElimination(LinearSystem *system) {
   }
 }
 
-Interval *solveLinearSystem(LinearSystem *system) {
-  int size = system->size;
-  Interval *solution = malloc(sizeof(Interval) * size);
-
+void solveLinearSystem(LinearSystem *system, Interval *solution) {
   gaussElimination(system);
   substitution(system, solution);
-
-  return solution;
 }

@@ -6,53 +6,35 @@
 #include "../../include/interval.h"
 
 Interval intervalSum(Interval a, Interval b) {
-  fesetround(FE_DOWNWARD);
-
   Interval result;
 
   result.min = a.min + b.min;
   result.max = a.max + b.max;
 
-  result.min = nextafter(result.min, -INFINITY);
-  result.max = nextafter(result.max,  INFINITY);
-
   return result;
 }
 
 Interval intervalSub(Interval a, Interval b) {
-  fesetround(FE_DOWNWARD);
-
   Interval result;
 
   result.min = a.min - b.max;
   result.max = a.max - b.min;
 
-  result.min = nextafter(result.min, -INFINITY);
-  result.max = nextafter(result.max, INFINITY);
-
   return result;
 }
 
 Interval intervalMult(Interval a, Interval b) {
-  fesetround(FE_DOWNWARD);
-
   Interval result;
 
   result.min = fmin(fmin(a.min * b.min, a.min * b.max),
                     fmin(a.max * b.min, a.max * b.max));
-  result.max =
-      fmax(fmax(a.min * b.min, a.min * b.max),
-           fmax(a.max * b.min, a.max * b.max));
-
-  result.min = nextafter(result.min, -INFINITY);
-  result.max = nextafter(result.max,  INFINITY);
+  result.max = fmax(fmax(a.min * b.min, a.min * b.max),
+                    fmax(a.max * b.min, a.max * b.max));
 
   return result;
 }
 
 Interval intervalDiv(Interval a, Interval b) {
-  fesetround(FE_DOWNWARD);
-
   Interval aux;
   aux.min = 1 / b.max;
   aux.max = 1 / b.min;
@@ -60,16 +42,28 @@ Interval intervalDiv(Interval a, Interval b) {
   return intervalMult(a, aux);
 }
 
-Interval intervalPow(Interval a, int b) {
-  fesetround(FE_DOWNWARD);
-
+Interval intervalPow(Interval a, int p) {
   Interval aux;
-  // aux.min = 1 / b.max;
-  // aux.max = 1 / b.min;
+  if (p == 0) {
+    aux.min = 1.0;
+    aux.max = 1.0;
+    return aux;
+  } else if (p % 2 == 1 || (p % 2 == 0 && a.min >= 0)) {
+    aux.min = pow(a.min, p);
+    aux.max = pow(a.max, p);
 
-  return intervalMult(a, aux);
+    return aux;
+  } else if (p % 2 == 0 && a.max < 0) {
+    aux.min = pow(a.max, p);
+    aux.max = pow(a.min, p);
+
+    return aux;
+  } else {
+    aux.min = 0;
+    aux.max = fmax(a.min * p, a.max * p);
+
+    return aux;
+  }
 }
 
-double intervalMean(Interval a) {
-  return (a.min + a.max)/2;
-}
+double intervalMean(Interval a) { return (a.min + a.max) / 2; }

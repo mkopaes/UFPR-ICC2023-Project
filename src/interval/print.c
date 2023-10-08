@@ -5,3 +5,11 @@
 void printInterval(Interval interval) {
   printf("[%1.8e,%1.8e]", interval.min, interval.max);
 }
+
+void printIntervalVector(Interval *interval, int size) {
+  for (int i = 0; i < size; i++) {
+    printInterval(interval[i]);
+    printf(" ");
+  }
+  printf("\n");
+}
