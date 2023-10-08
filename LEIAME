@@ -16,17 +16,18 @@ calculados pelo LIKWID.
 # Módulos
 
 ## curveFit (Ajuste de Curvas)
-// Descrição do modulo
+Biblioteca responsável por ordenar e chamar funções das demais bibliotecas a fim de executar o Método dos Mínimos Quadrados
 
 ## interval (Intervalo)
-// Descrição do modulo
+Responsável pela transformação de um double para um intervalo, bem como as operações: soma, subtração, multiplicação, divisão, potência e média (do intervalo).
+Também faz as impressões de um intervalo ou de um vetor de intervalos
 
 ## linearSystem (Sistema Linear)
-// Descrição do modulo
+Atua na criação, cálculo e resolução do Sistema Linear e Resíduos
 
 ## table (Tabela de pontos)
-// Descrição do modulo
+Construção da tabela de dados, bem como o manejo em memória da mesma (alocação e liberação)
 
 ## utils 
-// Descrição do modulo
+Biblioteca fornecida pelo professor, contém a função de marcação de tempo
 
