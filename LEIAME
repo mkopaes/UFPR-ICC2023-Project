@@ -1,6 +1,32 @@
-IMPLEMENTAR: Interval powInterval(x, exp)
-             Resíduo
-             Tempo
-             LIKWID
+Eric Kivel - GRR20220069
+Murilo Paes - GRR20190158
 
-             print
+# Execução
+
+Para executar o programa basta colocar a entrada em um arquivo chamado 
+"pontos.in" na raiz do projeto e então rodar o script "run.sh";
+
+# Saída
+
+Após rodar o script "run.sh" a saída ocorrerá no arquivo resultado.out
+(na raiz do projeto) contendo a resposta bem como a quantidade de MFLOP/s e Energia
+calculados pelo LIKWID.
+
+
+# Módulos
+
+## curveFit (Ajuste de Curvas)
+// Descrição do modulo
+
+## interval (Intervalo)
+// Descrição do modulo
+
+## linearSystem (Sistema Linear)
+// Descrição do modulo
+
+## table (Tabela de pontos)
+// Descrição do modulo
+
+## utils 
+// Descrição do modulo
+

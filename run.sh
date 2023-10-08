@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Eric Kivel - GRR20220069 | Murilo Paes - GRR20190158
+
 METRICA="FLOPS_DP ENERGY" 
 
 make

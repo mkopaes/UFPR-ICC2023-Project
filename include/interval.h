@@ -1,3 +1,4 @@
+// Eric Kivel - GRR20220069 | Murilo Paes - GRR20190158
 #include <stdint.h>
 
 #ifndef INTERVAL_H
