@@ -95,6 +95,9 @@ LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL) {
 
   LIKWID_MARKER_CLOSE;
 
+  free(sumsB);
+  free(sumsCoef);
+
   return LS;
 }
 

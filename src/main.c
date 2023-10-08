@@ -8,10 +8,9 @@ int main() {
   double tGeraSL;
   double tSolSL;
 
-  Interval *solution = malloc(sizeof(Interval) * (degree_N + 1));
-
   scanf("%d", &degree_N);
 
+  Interval *solution = malloc(sizeof(Interval) * (degree_N + 1));
   Table *tab = createTable();
 
   // Calculate
