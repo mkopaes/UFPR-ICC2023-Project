@@ -14,6 +14,7 @@ calculados pelo LIKWID.
 
 
 # Módulos
+A documentação detalhada de cada função se encontra nos respectivos arquivos de cabeçalho (.h)
 
 ## curveFit (Ajuste de Curvas)
 Biblioteca responsável por ordenar e chamar funções das demais bibliotecas a fim de executar o Método dos Mínimos Quadrados
