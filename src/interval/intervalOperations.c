@@ -37,6 +37,14 @@ Interval intervalMult(Interval a, Interval b) {
 
 Interval intervalDiv(Interval a, Interval b) {
   Interval aux;
+
+  // Se zero está contido no intervalo
+  if(b.min * b.max < 0) {
+    aux.min = -INFINITY;
+    aux.max = INFINITY;
+    return aux; 
+  }
+
   aux.min = 1 / b.max;
   aux.max = 1 / b.min;
 
