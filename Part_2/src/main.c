@@ -6,8 +6,7 @@
 int main() {
   // Arrange
   int degree_N;
-  double tGeraSL;
-  double tSolSL;
+  double tGeraSL, tSolSL, tResiduo;
 
   scanf("%d", &degree_N);
 
@@ -16,13 +15,16 @@ int main() {
 
   // Calculate
   LinearSystem *LS = minimumSquare(degree_N, tab, solution, &tGeraSL, &tSolSL);
+  tResiduo = timestamp();
   Interval *residue = calculateResidualVector(solution, tab, LS->size);
+  tResiduo = timestamp() - tResiduo;
 
   // Print
   printIntervalVector(solution, LS->size);
-  printIntervalVector(residue, tab->numPoints);
-  printf("%1.8e\n", tGeraSL);
-  printf("%1.8e\n", tSolSL);
+  // printIntervalVector(residue, tab->numPoints);
+  printf("Gera: %1.8e\n", tGeraSL);
+  printf("Solve: %1.8e\n", tSolSL);
+  printf("Residuo: %1.8e\n", tResiduo);
 
   // Free
   freeIntervalVector(solution);

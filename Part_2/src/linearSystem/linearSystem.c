@@ -31,41 +31,49 @@ LinearSystem *allocLinearSystem(int n) {
 
 // Calcula os somatórios dos coeficientes do SL criado no Método dos Mínimos
 // Quadrados Retorna o vetor de somatório dos coeficientes
-void calculateSums(int n, Table *tab, restrict Interval *sumsB, restrict Interval *sumsCoef) {
+void calculateSums(int n, Table *tab, Interval *sumsB, Interval *sumsCoef) {
   // Somatórios vão de expoente zero até 2n
   int totalSums = 2 * n + 1;
   int numCoef = n + 1;
 
   // Calcula os somatórios dos coeficientes da primeira linha e do vetor B
-  for (int p = 0; p < numCoef; p++) {
-    Interval xp = intervalPow(tab->x[0], p); // xp = x^p
-    Interval sumCoef = xp;
+  // =========================
 
-    Interval y_xp = intervalMult(tab->y[0], xp); // y_xp = y * x^p
-    Interval sumB = y_xp;
+  sumsCoef[0].min = (double)tab->numPoints;
+  sumsCoef[0].max = (double)tab->numPoints;
 
-    for (int i = 1; i < tab->numPoints; i++) {
-      xp = intervalPow(tab->x[i], p);
-      sumCoef = intervalSum(sumCoef, xp);
-
-      y_xp = intervalMult(tab->y[i], xp);
-      sumB = intervalSum(sumB, y_xp);
-    }
-
-    sumsCoef[p] = sumCoef;
-    sumsB[p] = sumB;
+  // Preenche vetor de somatorios com 0;
+  for (int i = 1; i < totalSums; i++) {
+    sumsCoef[i].min = 0.0;
+    sumsCoef[i].max = 0.0;
   }
 
-  // Calcula os somatórios dos coeficientes que faltaram
-  for (int p = numCoef; p < totalSums; p++) {
-    Interval xp = intervalPow(tab->x[0], p);
-    Interval sumCoef = xp;
+  for (int i = 0; i < numCoef; i++) {
+    sumsB[i].min = 0.0;
+    sumsB[i].max = 0.0;
+  }
 
-    for (int i = 1; i < tab->numPoints; i++) {
-      xp = intervalPow(tab->x[i], p);
-      sumCoef = intervalSum(sumCoef, xp);
+  // Para cada ponto
+  for (int i = 0; i < tab->numPoints; i++) {
+    Interval xBase = tab->x[i];
+    Interval xPow = tab->x[i];
+    Interval y = tab->y[i];
+
+    sumsB[0] = intervalSum(sumsB[0], y);
+
+    // Calcula primeira linha de A e vetor B
+    for (int j = 1; j < numCoef; j++) {
+      sumsCoef[j] = intervalSum(sumsCoef[j], xPow);
+      sumsB[j] = intervalSum(sumsB[j], intervalMult(y, xPow));
+      xPow = intervalMult(xPow, xBase);
     }
-    sumsCoef[p] = sumCoef;
+
+    // Calcula última coluna de A
+    for (int j = numCoef; j < totalSums; j++) {
+      sumsCoef[j] = intervalSum(sumsCoef[j], xPow);
+
+      xPow = intervalMult(xPow, xBase);
+    }
   }
 }
 
@@ -84,9 +92,9 @@ LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL) {
 
   calculateSums(n, tab, sumsB, sumsCoef);
 
-// Unrol & Jam
+  // Unrol & Jam
   int n_coef = n + 1;
-  for (int i = 0; i < n_coef - n_coef%UNRL1; i+=UNRL1) {
+  for (int i = 0; i < n_coef - n_coef % UNRL1; i += UNRL1) {
     for (int j = 0; j < n_coef; j++) {
       LS->coef[i][j] = sumsCoef[i + j];
       LS->coef[i + 1][j] = sumsCoef[i + 1 + j];
@@ -97,13 +105,13 @@ LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL) {
   }
 
   // Resíduo
-  for (int i = n_coef - n_coef%UNRL1; i < n_coef; i++) {
+  for (int i = n_coef - n_coef % UNRL1; i < n_coef; i++) {
     for (int j = 0; j < n_coef; j++)
       LS->coef[i][j] = sumsCoef[i + j];
 
     LS->b[i] = sumsB[i];
   }
-// Fim unroll
+  // Fim unroll
 
   LIKWID_MARKER_STOP("Build_Linear_System");
   *tGeraSL = timestamp() - *tGeraSL;
@@ -129,11 +137,12 @@ Interval *calculateResidualVector(Interval *solution, Table *tab, int size) {
 
   for (int i = 0; i < tab->numPoints; i++) {
     Interval res = solution[0];
-    Interval powX = tab->x[i]; 
+    Interval xBase = tab->x[i];
+    Interval xPow = tab->x[i];
 
     for (int j = 1; j < size; j++) {
-      res = intervalSum(res, intervalMult(solution[j], powX));
-      powX = intervalMult(powX, powX);
+      res = intervalSum(res, intervalMult(solution[j], xPow));
+      xPow = intervalMult(xPow, xBase);
     }
 
     residue[i] = intervalSub(tab->y[i], res);

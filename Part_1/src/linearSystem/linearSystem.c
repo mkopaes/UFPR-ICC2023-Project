@@ -31,7 +31,7 @@ LinearSystem *allocLinearSystem(int n) {
 
 // Calcula os somatórios dos coeficientes do SL criado no Método dos Mínimos
 // Quadrados Retorna o vetor de somatório dos coeficientes
-void calculateSums(int n, Table *tab, restrict Interval *sumsB, restrict Interval *sumsCoef) {
+void calculateSums(int n, Table *tab, Interval *sumsB, Interval *sumsCoef) {
   // Somatórios vão de expoente zero até 2n
   int totalSums = 2 * n + 1;
   int numCoef = n + 1;
