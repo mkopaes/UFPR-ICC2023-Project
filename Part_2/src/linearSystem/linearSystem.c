@@ -133,7 +133,7 @@ Interval *calculateResidualVector(Interval *solution, Table *tab, int size) {
 
     for (int j = 1; j < size; j++) {
       res = intervalSum(res, intervalMult(solution[j], powX));
-      powX = intervalMult(powX. powX);
+      powX = intervalMult(powX, powX);
     }
 
     residue[i] = intervalSub(tab->y[i], res);
