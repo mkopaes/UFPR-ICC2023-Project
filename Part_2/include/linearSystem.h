@@ -7,6 +7,8 @@
 #ifndef LINEAR_SYSTEM_H
 #define LINEAR_SYSTEM_H
 
+#define UNRL1 2
+
 // Estrutura para representar nosso SL, no formato de uma matriz de coeficientes "coef" 
 // de tamanho "size"x"size" e um vetor b de tamanho "size"
 typedef struct {

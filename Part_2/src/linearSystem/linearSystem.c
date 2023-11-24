@@ -84,12 +84,26 @@ LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL) {
 
   calculateSums(n, tab, sumsB, sumsCoef);
 
-  for (int i = 0; i < n + 1; i++) {
-    for (int j = 0; j < n + 1; j++)
+// Unrol & Jam
+  int n_coef = n + 1;
+  for (int i = 0; i < n_coef - n_coef%UNRL1; i+=UNRL1) {
+    for (int j = 0; j < n_coef; j++) {
+      LS->coef[i][j] = sumsCoef[i + j];
+      LS->coef[i + 1][j] = sumsCoef[i + 1 + j];
+    }
+
+    LS->b[i] = sumsB[i];
+    LS->b[i + 1] = sumsB[i + 1];
+  }
+
+  // Resíduo
+  for (int i = n_coef - n_coef%UNRL1; i < n_coef; i++) {
+    for (int j = 0; j < n_coef; j++) {
       LS->coef[i][j] = sumsCoef[i + j];
 
     LS->b[i] = sumsB[i];
   }
+// Fim unroll
 
   LIKWID_MARKER_STOP("Build_Linear_System");
   *tGeraSL = timestamp() - *tGeraSL;
