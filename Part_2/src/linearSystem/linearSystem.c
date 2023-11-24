@@ -98,7 +98,7 @@ LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL) {
 
   // Resíduo
   for (int i = n_coef - n_coef%UNRL1; i < n_coef; i++) {
-    for (int j = 0; j < n_coef; j++) {
+    for (int j = 0; j < n_coef; j++)
       LS->coef[i][j] = sumsCoef[i + j];
 
     LS->b[i] = sumsB[i];
@@ -128,14 +128,14 @@ Interval *calculateResidualVector(Interval *solution, Table *tab, int size) {
   Interval *residue = malloc(sizeof(Interval) * tab->numPoints);
 
   for (int i = 0; i < tab->numPoints; i++) {
-    Interval res;
-    res.min = 0.0;
-    res.max = 0.0;
+    Interval res = solution[0];
+    Interval powX = tab->x[i]; 
 
-    for (int j = 0; j < size; j++) {
-      res = intervalSum(res,
-                        intervalMult(solution[j], intervalPow(tab->x[i], j)));
+    for (int j = 1; j < size; j++) {
+      res = intervalSum(res, intervalMult(solution[j], powX));
+      powX = intervalMult(powX. powX);
     }
+
     residue[i] = intervalSub(tab->y[i], res);
   }
 
