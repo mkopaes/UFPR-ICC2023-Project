@@ -1,0 +1,38 @@
+Eric Kivel - GRR20220069
+Murilo Paes - GRR20190158
+
+# Execução
+
+Para executar o programa basta colocar a entrada em um arquivo chamado 
+"pontos.in" na raiz do projeto e então rodar o script "run.sh";
+
+# Saída
+
+Após rodar o script "run.sh" a saída ocorrerá no arquivo resultado.out
+(na raiz do projeto) contendo a resposta bem como a quantidade de MFLOP/s e Energia
+calculados pelo LIKWID.
+
+
+# Módulos
+A documentação detalhada de cada função se encontra nos respectivos arquivos de cabeçalho (.h)
+
+## curveFit (Ajuste de Curvas)
+Biblioteca responsável por ordenar e chamar funções das demais bibliotecas a fim de executar o Método dos Mínimos Quadrados
+
+## interval (Intervalo)
+Responsável pela transformação de um double para um intervalo, bem como as operações: soma, subtração, multiplicação, divisão, potência e média (do intervalo).
+Também faz as impressões de um intervalo ou de um vetor de intervalos
+
+## linearSystem (Sistema Linear)
+Atua na criação, cálculo e resolução do Sistema Linear e Resíduos
+
+## table (Tabela de pontos)
+Construção da tabela de dados, bem como o manejo em memória da mesma (alocação e liberação)
+
+## utils 
+Biblioteca fornecida pelo professor, contém a função de marcação de tempo
+
+## Otimizações e Correções:
+1 - Em operações de divisão de intervalo, foi adicionado uam verificação se zero pertence ao intervalo.
+2 - Adicionado na função "calculateSums()" a palavra chave restrict nos argumentos.
+
