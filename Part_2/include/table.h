@@ -7,13 +7,13 @@
 // Estrutura para armazenar uma tabela com "numPoints" pares ordenados (x, y)
 // Os dados da tabela são armazenados num vetor de intervalos "x" e "y"
 typedef struct {
-  int numPoints;
+  long long int numPoints;
   Interval *x;
   Interval *y;
 } Table;
 
 // Lê do stdin um valor K e logo em seguida lê K dados no modelo "x y".
-// Cria uma tabela intervalar com os dados lidos. 
+// Cria uma tabela intervalar com os dados lidos.
 // Retorna um ponteiro para a tabela criada.
 Table *createTable();
 
