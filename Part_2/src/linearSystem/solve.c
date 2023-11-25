@@ -9,9 +9,21 @@ void substitution(LinearSystem *system, Interval *solution) {
 
   for (int i = size - 1; i >= 0; i--) {
     solution[i] = system->b[i];
-    for (int j = i + 1; j < size; j++)
+
+    int j;
+    for (j = i + 1; j < size - size % UNRL1; j += UNRL1) {
       solution[i] = intervalSub(solution[i],
                                 intervalMult(system->coef[i][j], solution[j]));
+
+      solution[i] = intervalSub(
+          solution[i], intervalMult(system->coef[i][j + 1], solution[j + 1]));
+    }
+
+    for (; j < size; j++) {
+      solution[i] = intervalSub(solution[i],
+                                intervalMult(system->coef[i][j], solution[j]));
+    }
+
     solution[i] = intervalDiv(solution[i], system->coef[i][i]);
   }
 }

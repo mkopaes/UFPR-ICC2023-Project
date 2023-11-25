@@ -4,7 +4,7 @@
 echo "======================= Parte 1 ======================="
 cd Part_1/
 make
-./ajustePol < ../pontos.in
+../gera_entrada $1 | ./ajustePol
 
 ###
 
@@ -14,4 +14,4 @@ cd ../
 echo "======================= Parte 2 ======================="
 cd Part_2/
 make
-./ajustePol < ../pontos.in
+../gera_entrada $1 | ./ajustePol
