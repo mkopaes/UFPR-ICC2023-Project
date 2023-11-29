@@ -8,15 +8,15 @@ LinearSystem *minimumSquare(int n, Table *tab, Interval *solution,
   LinearSystem *LS = buildLinearSystem(n, tab, tGeraSl);
 
   LIKWID_MARKER_INIT;
+  LIKWID_MARKER_START("Solve_Linear_System");
 
   *tSolSL = timestamp();
-  LIKWID_MARKER_START("Solve_Linear_System");
 
   solveLinearSystem(LS, solution);
 
-  LIKWID_MARKER_STOP("Solve_Linear_System");
   *tSolSL = timestamp() - *tSolSL;
 
+  LIKWID_MARKER_STOP("Solve_Linear_System");
   LIKWID_MARKER_CLOSE;
 
   return LS;

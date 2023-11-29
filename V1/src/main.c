@@ -21,14 +21,15 @@ int main() {
   // Print
   // printIntervalVector(solution, LS->size);
   // printIntervalVector(residue, tab->numPoints);
-  printf("Gera: %1.8e\n", tGeraSL);
-  printf("Solve: %1.8e\n", tSolSL);
-  printf("Residuo: %1.8e\n", tResiduo);
+  printf("TempoGera\n%1.8e\n", tGeraSL);
+  printf("TempoSolve\n%1.8e\n", tSolSL);
+  printf("TempoResiduo\n%1.8e\n", tResiduo);
 
   // Free
   freeIntervalVector(solution);
   freeIntervalVector(residue);
   freeLinearSystem(LS);
   freeTable(tab);
+
   return 0;
 }

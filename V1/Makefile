@@ -3,25 +3,28 @@ TARGET = ajustePol
 
 SRCDIR = ./src ./src/*
 INCDIR = ./include
+LOGSDIR = ./logs
+RESULTDIR = ./resultados
 
-CC 			= gcc
+CC 			  = gcc
 CFILES 		= $(foreach D, $(SRCDIR), $(wildcard $(D)/*.c))
-# CFLAGS 		= -O3 -mavx -march=native
-CFLAGS		= -O3 -mavx -march=native -I${LIKWID_INCLUDE} -DLIKWID_PERFMON
-# LDFLAGS 	= -lm $(foreach D, $(INCDIR), -I$(D))
+LIKFLAGS   = -I${LIKWID_INCLUDE} -DLIKWID_PERFMON
+CFLAGS		= -O3 -mavx -march=native 
 LDFLAGS		= -lm -I$(INCDIR) -L${LIKWID_LIB} -llikwid
 OBJFILES 	= $(patsubst %.c, %.o, $(CFILES))
 
 all: $(TARGET)
 
 $(TARGET): $(OBJFILES)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) 
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $^
+	$(CC) $(CFLAGS) $(LIKFLAGS) $(LDFLAGS) -c -o $@ $^
 
 clean:
-	rm -f $(TARGET) $(OBJFILES)
+	rm -f $(OBJFILES)
 
-purge: 
-	rm -f $(TARGET) $(OBJFILES) *.txt *.log
+purge: clean
+	rm -f $(TARGET) *.txt 
+
+.PHONY: all clean purge
