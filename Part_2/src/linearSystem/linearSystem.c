@@ -54,7 +54,7 @@ void calculateSums(int n, Table *tab, Interval *sumsB, Interval *sumsCoef) {
   }
 
   // Para cada ponto
-  for (int i = 0; i < tab->numPoints; i++) {
+  for (long long int i = 0; i < tab->numPoints; i++) {
     Interval xBase = tab->x[i];
     Interval xPow = tab->x[i];
     Interval y = tab->y[i];
@@ -132,10 +132,16 @@ void freeLinearSystem(LinearSystem *LS) {
   free(LS);
 }
 
-Interval *calculateResidualVector(Interval *solution, Table *tab, int size) {
+Interval *calculateResidualVector(Interval *solution, Table *tab, int size,
+                                  double *tResiduo) {
   Interval *residue = malloc(sizeof(Interval) * tab->numPoints);
 
-  for (int i = 0; i < tab->numPoints; i++) {
+  LIKWID_MARKER_INIT;
+
+  *tResiduo = timestamp();
+  LIKWID_MARKER_START("Residuo");
+
+  for (long long int i = 0; i < tab->numPoints; i++) {
     Interval res = solution[0];
     Interval xBase = tab->x[i];
     Interval xPow = tab->x[i];
@@ -147,6 +153,11 @@ Interval *calculateResidualVector(Interval *solution, Table *tab, int size) {
 
     residue[i] = intervalSub(tab->y[i], res);
   }
+
+  LIKWID_MARKER_STOP("Residuo");
+  *tResiduo = timestamp() - *tResiduo;
+
+  LIKWID_MARKER_CLOSE;
 
   return residue;
 }

@@ -4,17 +4,17 @@
 #include <stdlib.h>
 
 Table *createTable() {
-  int numPoints;
+  long long int numPoints;
   double x, y;
 
-  scanf("%d", &numPoints);
+  scanf("%lld", &numPoints);
 
   Table *tab = malloc(sizeof(Table));
   tab->x = malloc(sizeof(Interval) * numPoints);
   tab->y = malloc(sizeof(Interval) * numPoints);
   tab->numPoints = numPoints;
 
-  for (int i = 0; i < numPoints; i++) {
+  for (long long int i = 0; i < numPoints; i++) {
     scanf("%lf %lf", &x, &y);
     createInterval(x, &tab->x[i]);
     createInterval(y, &tab->y[i]);

@@ -15,12 +15,11 @@ int main() {
 
   // Calculate
   LinearSystem *LS = minimumSquare(degree_N, tab, solution, &tGeraSL, &tSolSL);
-  tResiduo = timestamp();
-  Interval *residue = calculateResidualVector(solution, tab, LS->size);
-  tResiduo = timestamp() - tResiduo;
+  Interval *residue =
+      calculateResidualVector(solution, tab, LS->size, &tResiduo);
 
   // Print
-  printIntervalVector(solution, LS->size);
+  // printIntervalVector(solution, LS->size);
   // printIntervalVector(residue, tab->numPoints);
   printf("Gera: %1.8e\n", tGeraSL);
   printf("Solve: %1.8e\n", tSolSL);

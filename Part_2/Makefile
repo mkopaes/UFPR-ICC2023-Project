@@ -6,10 +6,10 @@ INCDIR = ./include
 
 CC 			= gcc
 CFILES 		= $(foreach D, $(SRCDIR), $(wildcard $(D)/*.c))
-# CFLAGS 		= -O3 -mavx -march=native
-CFLAGS		= -O3 -mavx -march=native -I${LIKWID_INCLUDE} -DLIKWID_PERFMON
-# LDFLAGS 	= -lm $(foreach D, $(INCDIR), -I$(D))
-LDFLAGS		= -lm -I$(INCDIR) -L${LIKWID_LIB} -llikwid
+CFLAGS 		= -O3 -mavx -march=native
+# CFLAGS		= -O3 -mavx -march=native -I${LIKWID_INCLUDE} -DLIKWID_PERFMON
+LDFLAGS 	= -lm $(foreach D, $(INCDIR), -I$(D))
+# LDFLAGS		= -lm -I$(INCDIR) -L${LIKWID_LIB} -llikwid
 OBJFILES 	= $(patsubst %.c, %.o, $(CFILES))
 
 all: $(TARGET)

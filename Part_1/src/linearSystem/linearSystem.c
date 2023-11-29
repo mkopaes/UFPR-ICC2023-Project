@@ -44,7 +44,7 @@ void calculateSums(int n, Table *tab, Interval *sumsB, Interval *sumsCoef) {
     Interval y_xp = intervalMult(tab->y[0], xp); // y_xp = y * x^p
     Interval sumB = y_xp;
 
-    for (int i = 1; i < tab->numPoints; i++) {
+    for (long long int i = 1; i < tab->numPoints; i++) {
       xp = intervalPow(tab->x[i], p);
       sumCoef = intervalSum(sumCoef, xp);
 
@@ -61,7 +61,7 @@ void calculateSums(int n, Table *tab, Interval *sumsB, Interval *sumsCoef) {
     Interval xp = intervalPow(tab->x[0], p);
     Interval sumCoef = xp;
 
-    for (int i = 1; i < tab->numPoints; i++) {
+    for (long long int i = 1; i < tab->numPoints; i++) {
       xp = intervalPow(tab->x[i], p);
       sumCoef = intervalSum(sumCoef, xp);
     }
@@ -78,9 +78,9 @@ LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL) {
   Interval *sumsCoef = malloc(sizeof(Interval) * (2 * n + 1));
 
   LIKWID_MARKER_INIT;
+  LIKWID_MARKER_START("Build_Linear_System");
 
   *tGeraSL = timestamp();
-  LIKWID_MARKER_START("Build_Linear_System");
 
   calculateSums(n, tab, sumsB, sumsCoef);
 
@@ -91,9 +91,9 @@ LinearSystem *buildLinearSystem(int n, Table *tab, double *tGeraSL) {
     LS->b[i] = sumsB[i];
   }
 
-  LIKWID_MARKER_STOP("Build_Linear_System");
   *tGeraSL = timestamp() - *tGeraSL;
 
+  LIKWID_MARKER_STOP("Build_Linear_System");
   LIKWID_MARKER_CLOSE;
 
   free(sumsB);
@@ -110,10 +110,16 @@ void freeLinearSystem(LinearSystem *LS) {
   free(LS);
 }
 
-Interval *calculateResidualVector(Interval *solution, Table *tab, int size) {
+Interval *calculateResidualVector(Interval *solution, Table *tab, int size,
+                                  double *tResiduo) {
   Interval *residue = malloc(sizeof(Interval) * tab->numPoints);
 
-  for (int i = 0; i < tab->numPoints; i++) {
+  LIKWID_MARKER_INIT;
+  LIKWID_MARKER_START("Residuo");
+
+  *tResiduo = timestamp();
+
+  for (long long int i = 0; i < tab->numPoints; i++) {
     Interval res;
     res.min = 0.0;
     res.max = 0.0;
@@ -124,6 +130,11 @@ Interval *calculateResidualVector(Interval *solution, Table *tab, int size) {
     }
     residue[i] = intervalSub(tab->y[i], res);
   }
+
+  *tResiduo = timestamp() - *tResiduo;
+
+  LIKWID_MARKER_STOP("Residuo");
+  LIKWID_MARKER_CLOSE;
 
   return residue;
 }
