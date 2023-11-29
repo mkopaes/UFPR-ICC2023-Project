@@ -2,8 +2,7 @@
 
 # Eric Kivel - GRR20220069 | Murilo Paes - GRR20190158
 
-# Ns="64 128 200 256 512 600 800 1024 2000 3000 4096 6000 7000 10000 50000 100000 1000000 10000000 100000000"
-Ns="64 128 200 256 512 600 800 1024"
+Ns="64 128 200 256 512 600 800 1024 2000 3000 4096 6000 7000 10000 50000 100000 1000000 10000000 100000000"
 METRICA="FLOPS_DP L3 L2CACHE" 
 LOGS_FOLDER="logs/"
 RESULT_FOLDER="resultados/"
@@ -25,13 +24,13 @@ if [ ! -d "${LOGS_FOLDER}" ]; then
   mkdir "${LOGS_FOLDER}"
 fi
 
-# ================================ PERCORRE AS VERSOES ================================
+# ================================ PERCORRE OS PONTOS ================================
 for n in $Ns
 do
   echo "performance" > /sys/devices/system/cpu/cpufreq/policy3/scaling_governor
   printf "\n\n N = ${n}\n\n"
 
-  # ================================ PERCORRE OS PONTOS ================================
+  # ================================ PERCORRE AS VERSÕES ================================
   for VERSION in $VERSIONS
   do
     cd ${VERSION}

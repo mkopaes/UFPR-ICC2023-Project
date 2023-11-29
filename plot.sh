@@ -20,7 +20,7 @@ TITLES=("Cache miss L2 Gera" "Cache miss L2 Residuo"
         "Banda De Memória Gera" "Banda De Memória Residuo"
         "Tempo Médio Gera" "Tempo Médio Solve" "Tempo Médio Residuo"
         "FlopsDP Gera" "FlopsDP Solve" "FlopsDP Residuo"
-        "FlopsAVXDP Gera" "FlopsAVX Solve" "FlopsAVX Residuo")
+        "FlopsAVX Gera" "FlopsAVX Solve" "FlopsAVX Residuo")
 
 YLABELS=("Cache Miss L2 (ratio)" "Cache Miss L2 (ratio)"
          "Banda de Memória (MBYTE/s)" "Banda de Memória (MBYTE/s)"
