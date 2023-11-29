@@ -28,7 +28,7 @@ YLABELS=("Cache Miss L2 (ratio)" "Cache Miss L2 (ratio)"
          "MFLOP/s" "MFLOP/s" "MFLOP/s"
          "MFLOP/s" "MFLOP/s" "MFLOP/s")
 
-for i in {0..9}
+for i in {0..12}
 do
   gnuplot <<- EOM
   set terminal png size 1080, 1080 enhanced font 'Helvetica,20' linewidth 3
